@@ -15,11 +15,15 @@ public record RssTextInput
     [XmlElement("description")]
     public string Description { get; set; } = "";
 
+    public bool ShouldSerializeDescription() => !string.IsNullOrEmpty(Description);
+
     /// <summary>
     ///   Gets or sets the URL of the CGI script that processes text input requests.
     /// </summary>
     [XmlElement("link")]
     public RssUrl Link { get; set; } = new();
+
+    public bool ShouldSerializeLink() => !string.IsNullOrEmpty(Link?.Url);
 
     /// <summary>
     ///   Gets or sets the name of the text object in the text input area.
@@ -27,9 +31,13 @@ public record RssTextInput
     [XmlElement("name")]
     public string Name { get; set; } = "";
 
+    public bool ShouldSerializeName() => !string.IsNullOrEmpty(Name);
+
     /// <summary>
     ///   Gets or sets the label of the Submit button in the text input area.
     /// </summary>
     [XmlElement("title")]
     public string Title { get; set; } = "";
+
+    public bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
 }

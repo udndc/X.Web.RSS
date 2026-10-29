@@ -18,6 +18,8 @@ public record RssImage
     [XmlElement("description")]
     public string Description { get; set; } = "";
 
+    public bool ShouldSerializeDescription() => !string.IsNullOrEmpty(Description);
+
     /// <summary>
     ///   Gets or sets optional elements include 'width', numbers, indicating the width of the image in pixels.
     /// </summary>
@@ -61,12 +63,16 @@ public record RssImage
     [XmlElement("link")]
     public RssUrl Link { get; set; } = new();
 
+    public bool ShouldSerializeLink() => !string.IsNullOrEmpty(Link?.Url);
+
     /// <summary>
     ///   Gets or sets describes the image, it's used in the ALT attribute of the HTML 'img'
     ///   tag when the channel is rendered in HTML.
     /// </summary>
     [XmlElement("title")]
     public string Title { get; set; } = "";
+
+    public bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
 
     /// <summary>
     ///   Gets or sets is the URL of a GIF, JPEG or PNG image that represents the channel.
