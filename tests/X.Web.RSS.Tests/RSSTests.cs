@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using X.Web.RSS.Enumerators;
 using X.Web.RSS.Structure;
 using Xunit;
@@ -44,6 +46,37 @@ public class RSSTests
         Assert.NotNull(newRss);
 
         Assert.Equal(rss.Channel.Description, newRss.Channel.Description);
+    }
+
+    [Fact]
+    public void Serialize_LargeObject_WritesAllElements()
+    {
+        var xml = XDocument.Parse(new RssDocumentSerializer().Serialize(GetFullRss()));
+
+        var channel = xml.Root!.Element("channel")!;
+        var item = channel.Element("item")!;
+
+        Assert.Equal(
+            [
+                "link", "category", "cloud", "copyright", "description", "docs", "generator", "image",
+                "language", "lastBuildDate", "pubDate", "link", "managingEditor", "rating", "skipDays",
+                "skipHours", "ttl", "textInput", "title", "webMaster", "item"
+            ],
+            channel.Elements().Select(o => o.Name.LocalName));
+
+        Assert.Equal(
+            ["description", "width", "height", "link", "title", "url"],
+            channel.Element("image")!.Elements().Select(o => o.Name.LocalName));
+
+        Assert.Equal(
+            ["description", "link", "name", "title"],
+            channel.Element("textInput")!.Elements().Select(o => o.Name.LocalName));
+
+        Assert.Equal(
+            ["author", "category", "comments", "description", "enclosure", "guid", "link", "source", "title", "pubDate"],
+            item.Elements().Select(o => o.Name.LocalName));
+
+        Assert.Equal("category domain value", item.Element("category")!.Attribute("domain")!.Value);
     }
 
     [Fact]

@@ -13,6 +13,8 @@ public record RssCategory
     [XmlAttribute("domain")]
     public string Domain { get; set; }
 
+    public bool ShouldSerializeDomain() => !string.IsNullOrEmpty(Domain);
+
     [XmlText]
     public string Text { get; set; }
 }

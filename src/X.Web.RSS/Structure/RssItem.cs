@@ -22,17 +22,23 @@ public record RssItem
     [XmlElement("author")]
     public string Author { get; set; } = "";
 
+    public bool ShouldSerializeAuthor() => !string.IsNullOrEmpty(Author);
+
     /// <summary>
     ///   Gets or sets includes the item in one or more categories.
     /// </summary>
     [XmlElement("category")]
     public RssCategory Category { get; set; } = new();
 
+    public bool ShouldSerializeCategory() => !string.IsNullOrEmpty(Category?.Text);
+
     /// <summary>
     ///   Gets or sets URL of a page for comments relating to the item.
     /// </summary>
     [XmlElement("comments")]
     public RssUrl Comments { get; set; } = new();
+
+    public bool ShouldSerializeComments() => !string.IsNullOrEmpty(Comments?.Url);
 
     /// <summary>
     ///   Gets or sets the item synopsis.
@@ -45,17 +51,23 @@ public record RssItem
     [XmlElement("description")]
     public string Description { get; set; } = "";
 
+    public bool ShouldSerializeDescription() => !string.IsNullOrEmpty(Description);
+
     /// <summary>
     ///   Gets or sets describes a media object that is attached to the item.
     /// </summary>
     [XmlElement("enclosure")]
     public RssEnclosure Enclosure { get; set; } = new();
 
+    public bool ShouldSerializeEnclosure() => !string.IsNullOrEmpty(Enclosure?.Url);
+
     /// <summary>
     ///   Gets or sets a string that uniquely identifies the item.
     /// </summary>
     [XmlElement("guid")]
     public RssGuid Guid { get; set; } = new();
+
+    public bool ShouldSerializeGuid() => !string.IsNullOrEmpty(Guid?.Value);
 
     /// <summary>
     ///   Gets or sets the URL of the item.
@@ -65,6 +77,8 @@ public record RssItem
     /// </example>
     [XmlElement("link")]
     public RssUrl Link { get; set; } = new();
+
+    public bool ShouldSerializeLink() => !string.IsNullOrEmpty(Link?.Url);
 
     /// <summary>
     ///   Gets or sets indicates when the item was published.
@@ -78,6 +92,8 @@ public record RssItem
     [XmlElement("source")]
     public RssSource Source { get; set; } = new();
 
+    public bool ShouldSerializeSource() => !string.IsNullOrEmpty(Source?.Url);
+
     /// <summary>
     ///   Gets or sets the title of the item.
     /// </summary>
@@ -87,10 +103,14 @@ public record RssItem
     [XmlElement("title")]
     public string Title { get; set; } = "";
 
+    public bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
+
     [XmlElement("pubDate")]
     public string InternalPubDate
     {
         get => PubDate?.ToRFC822Date() ?? string.Empty;
         set => PubDate = value?.FromRFC822Date();
     }
+
+    public bool ShouldSerializeInternalPubDate() => PubDate.HasValue;
 }

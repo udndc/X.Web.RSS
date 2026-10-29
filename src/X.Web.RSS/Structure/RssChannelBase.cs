@@ -37,7 +37,6 @@ public abstract record RssChannelBase
         TextInput = new RssTextInput();
         Title = "";
         WebMaster = "";
-        TTL = 60;
     }
 
     /// <summary>
@@ -46,12 +45,16 @@ public abstract record RssChannelBase
     [XmlElement("link", Namespace = "http://www.w3.org/2005/Atom")]
     public RssLink AtomLink { get; set; }
 
+    public bool ShouldSerializeAtomLink() => !string.IsNullOrEmpty(AtomLink?.Href);
+
     /// <summary>
     /// Gets or sets one or more categories that the channel belongs to. 
     /// Follows the same rules as the 'item'-level category element.
     /// </summary>
     [XmlElement("category")]
     public string Category { get; set; }
+
+    public bool ShouldSerializeCategory() => !string.IsNullOrEmpty(Category);
 
     /// <summary>
     /// Gets or sets processes to register with a cloud to be notified of 
@@ -60,6 +63,8 @@ public abstract record RssChannelBase
     /// </summary>
     [XmlElement("cloud")]
     public RssCloud Cloud { get; set; }
+
+    public bool ShouldSerializeCloud() => !string.IsNullOrEmpty(Cloud?.Domain);
 
     /// <summary>
     /// Gets or sets copyright notice for content in the channel.
@@ -70,6 +75,8 @@ public abstract record RssChannelBase
     [XmlElement("copyright")]
     public string Copyright { get; set; }
 
+    public bool ShouldSerializeCopyright() => !string.IsNullOrEmpty(Copyright);
+
     /// <summary>
     /// Gets or sets phrase or sentence describing the channel.
     /// </summary>
@@ -78,6 +85,8 @@ public abstract record RssChannelBase
     /// </example>
     [XmlElement("description")]
     public string Description { get; set; }
+
+    public bool ShouldSerializeDescription() => !string.IsNullOrEmpty(Description);
 
     /// <summary>
     /// Gets or sets URL that points to the documentation for the format used in the RSS file. 
@@ -90,6 +99,8 @@ public abstract record RssChannelBase
     [XmlElement("docs")]
     public string Docs { get; set; }
 
+    public bool ShouldSerializeDocs() => !string.IsNullOrEmpty(Docs);
+
     /// <summary>
     /// Gets or sets a string indicating the program used to generate the channel.
     /// </summary>
@@ -99,11 +110,15 @@ public abstract record RssChannelBase
     [XmlElement("generator")]
     public string Generator { get; set; }
 
+    public bool ShouldSerializeGenerator() => !string.IsNullOrEmpty(Generator);
+
     /// <summary>
     /// Gets or sets a GIF, JPEG or PNG image that can be displayed with the channel.
     /// </summary>
     [XmlElement("image")]
     public RssImage Image { get; set; }
+
+    public bool ShouldSerializeImage() => !string.IsNullOrEmpty(Image?.Url?.Url);
 
     /// <summary>
     /// Gets or sets OPTIONAL the language the channel is written in. This allows aggregators to group all 
@@ -133,12 +148,16 @@ public abstract record RssChannelBase
         set => LastBuildDate = value?.FromRFC822Date();
     }
 
+    public bool ShouldSerializeInternalLastBuildDate() => LastBuildDate.HasValue;
+
     [XmlElement("pubDate")]
     public string InternalPubDate
     {
         get => PubDate?.ToRFC822Date() ?? string.Empty;
         set => PubDate = value?.FromRFC822Date();
     }
+
+    public bool ShouldSerializeInternalPubDate() => PubDate.HasValue;
 
     /// <summary>
     /// Gets or sets the last time the content of the channel changed.
@@ -158,6 +177,8 @@ public abstract record RssChannelBase
     [XmlElement("link")]
     public RssUrl Link { get; set; }
 
+    public bool ShouldSerializeLink() => !string.IsNullOrEmpty(Link?.Url);
+
     /// <summary>
     /// Gets or sets email address for person responsible for editorial content.
     /// </summary>
@@ -166,6 +187,8 @@ public abstract record RssChannelBase
     /// </example>
     [XmlElement("managingEditor")]
     public string ManagingEditor { get; set; }
+
+    public bool ShouldSerializeManagingEditor() => !string.IsNullOrEmpty(ManagingEditor);
 
     /// <summary>
     /// Gets or sets the publication date for the content in the channel. 
@@ -188,6 +211,8 @@ public abstract record RssChannelBase
     /// </summary>
     [XmlElement("rating")]
     public string Rating { get; set; }
+
+    public bool ShouldSerializeRating() => !string.IsNullOrEmpty(Rating);
 
     /// <summary>
     /// Gets or sets a hint for aggregators telling them which days they can skip. 
@@ -233,11 +258,20 @@ public abstract record RssChannelBase
         }
     }
 
+    public bool ShouldSerializeTTL() => TTL > 0;
+
     /// <summary>
     /// Gets or sets a text input box that can be displayed with the channel. OBSOLETE.
     /// </summary>
     [XmlElement("textInput")]
     public RssTextInput TextInput { get; set; }
+
+    public bool ShouldSerializeTextInput() =>
+        TextInput != null &&
+        (!string.IsNullOrEmpty(TextInput.Title) ||
+         !string.IsNullOrEmpty(TextInput.Description) ||
+         !string.IsNullOrEmpty(TextInput.Name) ||
+         !string.IsNullOrEmpty(TextInput.Link?.Url));
 
     /// <summary>
     /// Gets or sets the name of the channel. It's how people refer to your service. 
@@ -251,6 +285,8 @@ public abstract record RssChannelBase
     [XmlElement("title")]
     public string Title { get; set; }
 
+    public bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
+
     /// <summary>
     /// Gets or sets email address for person responsible for technical issues relating to channel.
     /// </summary>
@@ -259,4 +295,6 @@ public abstract record RssChannelBase
     /// </example>
     [XmlElement("webMaster")]
     public string WebMaster { get; set; }
+
+    public bool ShouldSerializeWebMaster() => !string.IsNullOrEmpty(WebMaster);
 }
