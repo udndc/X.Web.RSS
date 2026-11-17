@@ -7,7 +7,7 @@
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 
         <Authors>Andrew Gubskiy</Authors>
-        <Copyright>Andrew Gubskiy © 2025</Copyright>
+        <Copyright>Andrew Gubskiy © 2026</Copyright>
         <Company>Ukrainian .NET Developer Community</Company>
 
         <Version>3.0.4</Version>
@@ -16,7 +16,7 @@
         <PackageVersion>3.0.4</PackageVersion>
 
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/dncuug/X.Web.RSS.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/udndc/X.Web.RSS.git</RepositoryUrl>
         <PackageProjectUrl>https://andrew.gubskiy.com/open-source</PackageProjectUrl>        
     </PropertyGroup>
 
