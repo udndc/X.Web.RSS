@@ -29,6 +29,8 @@ Since 3.0, the library contains some important breaking changes:
 * Serialization logic was moved to `RssDocumentSerializer` class.
 * `RssDocument` and most other entities were converted from `class` to `record`.
 
+Since 4.0, the package targets `netstandard2.0`, `net10.0` and `net11.0`; the `net8.0` build was removed (.NET 8 apps use the `netstandard2.0` build).
+
 ## Usage example
 To read a foreign RSS feed you need to get a stream with RSS data and deserialize it using `RssDocumentSerializer`.
 
